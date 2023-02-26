@@ -62,8 +62,8 @@ const Login = (props) => {
       <div className=" absolute rotate-45 -top-40 left-0 rounded-2xl h-80 w-96 bg-blue-900"></div>
         <div className="absolute rotate-45 -bottom-32 -right-2 rounded-2xl h-96 w-96 bg-orange-500"></div>
         <div className="z-50 flex bg-emerald-300 justify-center items-center rounded-3xl">
-          <div className="w-3/5">
-            <img src="images/doctor.png" />
+          <div className="w-96 h-1/2">
+            <img src="images/login.jpg" />
           </div>
           <div className="w-2/5 mx-6 mr-12">
             <div className="z-40 h-full bg-emerald-200 rounded-xl shadow-2xl shadow-slate-300 p-4 w-96 mx-6">
