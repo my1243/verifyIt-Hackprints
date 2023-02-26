@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const StudentSchema = new mongoose.Schema({
 
@@ -16,7 +16,6 @@ const StudentSchema = new mongoose.Schema({
     branch: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "branch" },
     hall: { type: mongoose.Schema.Types.ObjectId, ref: "hall" },
 });
-
 
 /*
 PK : studentId

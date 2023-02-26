@@ -1,126 +1,145 @@
-const { ddu_id_formate_check, verify_roll_no } = require("../Src/Helpers/student-helpers");
+const {
+	ddu_id_formate_check,
+	verify_roll_no,
+} = require("../Src/Helpers/student-helpers");
 const BranchCollection = require("../Src/Models/branch-schema");
 const StudentCollection = require("../Src/Models/student-schema");
 
 module.exports = {
+	createStudent: async (req, res) => {
+		try {
+			let student = await StudentCollection.findOne({
+				studentId: req.body.studentId,
+			});
+			if (student !== null)
+				return res.status(200).send("already exist student:)");
 
-    createStudent: async (req, res) => {
-        try {
-            let student = await StudentCollection.findOne({ studentId: req.body.studentId });
-            if (student !== null) return res.status(200).send("already exist student:)");
+			student = await StudentCollection.findOne({ rollNo: req.body.rollNo });
+			if (student !== null)
+				return res
+					.status(200)
+					.send("student already exist with rollNO :)" + req.body.rollNo);
 
-            student = await StudentCollection.findOne({ rollNo: req.body.rollNo });
-            if (student !== null)
-                return res.status(200).send("student already exist with rollNO :)" + req.body.rollNo);
+			let branch = await BranchCollection.findOne({
+				$and: [
+					{ branchId: req.body.branchId },
+					{ semester: req.body.semester },
+				],
+			});
+			if (branch === null)
+				return res.status(200).send("branch doesn't exist :)");
 
-            let branch = await BranchCollection.findOne({
-                $and: [{ branchId: req.body.branchId }, { semester: req.body.semester }]
-            });
-            if (branch === null) return res.status(200).send("branch doesn't exist :)");
+			//verify student id
+			// if (!ddu_id_formate_check(req.body.studentId.toUpperCase()))
+			// 	return res.status(200).send("invalid student-id:)");
 
-            //verify student id
-            if (!ddu_id_formate_check(req.body.studentId.toUpperCase()))
-                return res.status(200).send("invalid student-id:)");
+			//verify roll NO
+			// if (!verify_roll_no(req.body.rollNo.toUpperCase()))
+			// 	return res.status(200).send("invalid rollNo:)");
 
-            //verify roll NO
-            if (!verify_roll_no(req.body.rollNo.toUpperCase()))
-                return res.status(200).send("invalid rollNo:)");
+			student = new StudentCollection({
+				studentId: req.body.studentId,
+				fname: req.body.fname,
+				lname: req.body.lname,
+				rollNo: req.body.rollNo,
+				branch: branch._id,
+				semester: req.body.semester,
+				feeStatus: req.body.feeStatus,
+				clg: req.body.clg,
+			});
+			if (req.body.img !== "" && req.body.img !== undefined)
+				student.img = req.body.img;
 
-            student = new StudentCollection({
-                studentId: req.body.studentId,
-                name: req.body.name,
-                rollNo: req.body.rollNo,
-                branch: branch._id,
-                semester: req.body.semester,
-                clg: req.body.clg,
-            });
-            if (req.body.img !== "" && req.body.img !== undefined) student.img = req.body.img;
+			const savedStudent = await student.save();
+			return res.status(200).send(savedStudent);
+		} catch (error) {
+			console.log(error);
+			return res.status(401).send(error);
+		}
+	},
+	getStudents: async (req, res) => {
+		try {
+			let students = await StudentCollection.find({});
+			return res.status(200).send(students);
+		} catch (error) {
+			return res.status(401).send(error);
+		}
+	},
+	updateStudent: async (req, res) => {
+		try {
+			let student = await StudentCollection.findOne({
+				studentId: req.body.studentId,
+			});
+			if (student !== null && student._id.toString() !== req.body._id)
+				return res
+					.status(200)
+					.send("student already exist with Id :)" + req.body.studentId);
 
-            await student.save();
-            return res.status(200).send(student);
+			student = await StudentCollection.findOne({ rollNo: req.body.rollNo });
+			if (student !== null && student._id.toString() !== req.body._id)
+				return res
+					.status(200)
+					.send("student already exist with rollNO :)" + req.body.rollNo);
 
-        } catch (error) {
-            return res.status(401).send(error);
-        }
-    },
-    getStudents: async (req, res) => {
-        try {
-            let students = await StudentCollection.find({});
-            return res.status(200).send(students);
+			let branch = await BranchCollection.findOne({
+				$and: [
+					{ branchId: req.body.branchId },
+					{ semester: req.body.semester },
+				],
+			});
+			if (branch === null)
+				return res.status(200).send("branch doesn't exist :)");
 
-        } catch (error) {
-            return res.status(401).send(error);
-        }
-    },
-    updateStudent: async (req, res) => {
-        try {
+			//verify student id
+			if (!ddu_id_formate_check(req.body.studentId.toUpperCase()))
+				return res.status(200).send("invalid student-id:)");
 
-            let student = await StudentCollection.findOne({ studentId: req.body.studentId });
-            if (student !== null && student._id.toString() !== req.body._id) return res.status(200).send("student already exist with Id :)" + req.body.studentId);
+			//verify roll NO
+			if (!verify_roll_no(req.body.rollNo.toUpperCase()))
+				return res.status(200).send("invalid rollNo:)");
 
-            student = await StudentCollection.findOne({ rollNo: req.body.rollNo });
-            if (student !== null && student._id.toString() !== req.body._id)
-                return res.status(200).send("student already exist with rollNO :)" + req.body.rollNo);
+			student = await StudentCollection.findOne({ _id: req.body._id });
 
-            let branch = await BranchCollection.findOne({
-                $and: [{ branchId: req.body.branchId }, { semester: req.body.semester }]
-            });
-            if (branch === null)
-                return res.status(200).send("branch doesn't exist :)");
+			student.studentId = req.body.studentId;
+			student.name = req.body.name;
+			student.rollNo = req.body.rollNo;
+			student.branch = branch._id;
+			student.semester = req.body.semester;
+			student.clg = req.body.clg;
 
-            //verify student id
-            if (!ddu_id_formate_check(req.body.studentId.toUpperCase()))
-                return res.status(200).send("invalid student-id:)");
+			if (req.body.img !== "" && req.body.img !== undefined)
+				student.img = req.body.img;
 
-            //verify roll NO
-            if (!verify_roll_no(req.body.rollNo.toUpperCase()))
-                return res.status(200).send("invalid rollNo:)");
-
-            student = await StudentCollection.findOne({ _id: req.body._id });
-
-            student.studentId = req.body.studentId;
-            student.name = req.body.name;
-            student.rollNo = req.body.rollNo;
-            student.branch = branch._id;
-            student.semester = req.body.semester;
-            student.clg = req.body.clg;
-
-            if (req.body.img !== "" && req.body.img !== undefined) student.img = req.body.img;
-
-            await student.save();
-            return res.status(200).send(student);
-
-        } catch (error) {
-            return res.status(401).send(error);
-        }
-    },
-    deleteStudent: async (req, res) => {
-        try {
-
-            let result = await StudentCollection.deleteOne({ _id: req.body._id });
-            return res.status(200).send(result);
-
-        } catch (error) {
-            return res.status(401).send(error);
-        }
-    },
-    getSpecificStudent: async (req, res) => {
-        try {
-            let student = await StudentCollection.findOne({ studentId: req.body.studentId });
-            return res.status(200).send(student);
-
-        } catch (error) {
-            return res.status(401).send(error);
-        }
-    },
-    deleteAllStudents: async (req, res) => {
-        try {
-
-            let result = await StudentCollection.deleteMany({});
-            return res.status(200).send(result);
-
-        } catch (error) {
-            return res.status(401).send(error);
-        }
-    },
+			await student.save();
+			return res.status(200).send(student);
+		} catch (error) {
+			return res.status(401).send(error);
+		}
+	},
+	deleteStudent: async (req, res) => {
+		try {
+			let result = await StudentCollection.deleteOne({ _id: req.body._id });
+			return res.status(200).send(result);
+		} catch (error) {
+			return res.status(401).send(error);
+		}
+	},
+	getSpecificStudent: async (req, res) => {
+		try {
+			let student = await StudentCollection.findOne({
+				studentId: req.body.studentId,
+			});
+			return res.status(200).send(student);
+		} catch (error) {
+			return res.status(401).send(error);
+		}
+	},
+	deleteAllStudents: async (req, res) => {
+		try {
+			let result = await StudentCollection.deleteMany({});
+			return res.status(200).send(result);
+		} catch (error) {
+			return res.status(401).send(error);
+		}
+	},
 };
