@@ -13,11 +13,13 @@ app.use(body_parser.urlencoded({ extended: false }));
 
 //routers
 const branch_routers = require('./Routers/branch-routers');
+const hall_routers = require('./Routers/hall-routers');
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+//branches
 app.post("/create-branch", branch_routers);
 app.post("/get-branchs", branch_routers);
 app.post("/get-specific-branch", branch_routers);
@@ -32,6 +34,18 @@ app.post("/get-subject-based-on-branch", branch_routers);
 app.patch("/update-subject", branch_routers);
 app.delete("/delete-subject", branch_routers);
 app.delete("/delete-all-subjects", branch_routers);
+
+//halls
+app.post("/create-hall", hall_routers);
+app.post("/get-halls", hall_routers);
+app.post("/get-specific-hall", hall_routers);
+app.patch("/update-hall", hall_routers);
+app.delete("/delete-hall", hall_routers);
+app.delete("/delete-all-halls", hall_routers);
+
+app.post("/allocate-hall", hall_routers);
+app.post("/deallocate-hall", hall_routers);
+
 
 app.listen(PORT, () => {
     console.log(`Server listening on  http://127.0.0.1:${PORT}`);

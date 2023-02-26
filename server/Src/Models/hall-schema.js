@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 
 const HallSchema = new mongoose.Schema({
 
-    hallNo: { type: String, required: true },
-    capacity: { type: Number, required: true },
+    hallNo: { type: Number, required: true, min: 1, max: 50 },
+    capacity: { type: Number, required: true, min: 1, max: 120 },
     rollNoRange: {
-        startRollNo: { type: String, required: true },
-        endRollNo: { type: String, required: true },
+        startRollNo: { type: String, default: "XX000" },
+        endRollNo: { type: String, default: "XX000" },
     },
-    available: { type: Boolean, default: true }
+    available: { type: Boolean, default: true },
+    allocatedBranch: { type: mongoose.Schema.Types.ObjectId, ref: "branch" }
 });
 
 /*

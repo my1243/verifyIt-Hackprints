@@ -9,7 +9,8 @@ const BranchSchema = new mongoose.Schema({
     subjects: [{
         subjectCode: { type: String, required: true },
         subjectName: { type: String, required: true },
-    }]
+    }],
+    available: { type: Boolean, default: true }
 });
 
 /*
