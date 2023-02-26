@@ -1,28 +1,26 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-
 
 //controllers
 const {
-    createBranch,
-    getBranches,
-    getSpecificBranch,
-    updateBranch,
-    deleteBranch,
-    deleteAllBranches,
+	createBranch,
+	getBranches,
+	getSpecificBranch,
+	updateBranch,
+	deleteBranch,
+	deleteAllBranches,
 
-    createSubject,
-    getSubjects,
-    getSpecificSubject,
-    getSubjectsBasedOnBranch,
-    updateSubject,
-    deleteSubject,
-    deleteAllSubjects
-
+	createSubject,
+	getSubjects,
+	getSpecificSubject,
+	getSubjectsBasedOnBranch,
+	updateSubject,
+	deleteSubject,
+	deleteAllSubjects,
 } = require("../../Controllers/branch-cntrl");
 
 router.post("/create-branch", createBranch);
-router.post("/get-branchs", getBranches);
+router.get("/get-branchs", getBranches);
 router.post("/get-specific-branch", getSpecificBranch);
 router.patch("/update-branch", updateBranch);
 router.delete("/delete-branch", deleteBranch);
@@ -35,6 +33,5 @@ router.post("/get-subject-based-on-branch", getSubjectsBasedOnBranch);
 router.patch("/update-subject", updateSubject);
 router.delete("/delete-subject", deleteSubject);
 router.delete("/delete-all-subjects", deleteAllSubjects);
-
 
 module.exports = router;
