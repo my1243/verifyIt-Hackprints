@@ -1,10 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const StudentSchema = new mongoose.Schema({
 
     studentId: { type: String, required: true, unique: true },
-    fname: { type: String, required: true },
-    lname: { type: String, required: true },
+    name: { type: String, required: true },
     rollNo: { type: String, required: true, unique: true },
     semester: { type: Number, required: true },
     clg: { type: String, required: true },
@@ -15,11 +14,8 @@ const StudentSchema = new mongoose.Schema({
     }],
     feeStatus: { type: Boolean, default: false },
     branch: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "branch" },
-    allotments: [{
-        allotment: { type: mongoose.Schema.Types.ObjectId, ref: "examSchedule" },
-    }],
+    hall: { type: mongoose.Schema.Types.ObjectId, ref: "hall" },
 });
-
 
 /*
 PK : studentId
