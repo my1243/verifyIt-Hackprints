@@ -40,6 +40,13 @@ module.exports = {
         try {
             let branch = await BranchCollection.findOne({ _id: req.body._id });
 
+            // already exist branch ?
+            let tmpBranch = await BranchCollection.findOne({
+                $and: [{ branchId: req.body.branchId }, { semester: req.body.semester }]
+            });
+            if (tmpBranch !== null) { return res.status(200).send("already exist branch:"); }
+            tmpBranch = null;
+
             branch.branchId = req.body.branchId;
             branch.branchName = req.body.branchName;
             branch.semester = req.body.semester;
@@ -148,6 +155,14 @@ module.exports = {
             if (branch === null)
                 return res.status(403).send("doesn't exist " + req.body.branchId + " branch for " + req.body.semester + " semester");
 
+            // already exist subject ?
+            for (i = 0; i < branch.subjects.length; i++) {
+                if (branch.subjects[i].subjectCode === req.body.updatedSubjectCode) {
+                    return res.status(200).send("already exist subject:");
+                }
+            }
+
+            //update
             for (i = 0; i < branch.subjects.length; i++) {
 
                 if (branch.subjects[i].subjectCode === req.body.subjectCode) {
