@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 const FacultySchema = new mongoose.Schema({
     fId: { type: String, required: true, unique: true },
+    fShortName: { type: String, unique: true, required: true },
     fName: { type: String, required: true },
     lName: { type: String, required: true },
-    fShortName: { type: String, required: true },
     branch: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "branch" },
-    halls: [{
-        hall: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "hall" }
+    allotments: [{
+        allotment: { type: mongoose.Schema.Types.ObjectId, ref: "examSchedule" },
     }],
 });
 

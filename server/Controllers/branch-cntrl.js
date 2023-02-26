@@ -38,14 +38,12 @@ module.exports = {
     },
     updateBranch: async (req, res) => {
         try {
-            let branch = await BranchCollection.findOne({ _id: req.body._id });
-
-            // already exist branch ?
-            let tmpBranch = await BranchCollection.findOne({
+            let branch = await BranchCollection.findOne({
                 $and: [{ branchId: req.body.branchId }, { semester: req.body.semester }]
             });
-            if (tmpBranch !== null) { return res.status(200).send("already exist branch:"); }
-            tmpBranch = null;
+
+            // already exist branch ?
+            if (branch !== null && branch._id.toString() !== req.body._id) { return res.status(200).send("already exist branch:"); }
 
             branch.branchId = req.body.branchId;
             branch.branchName = req.body.branchName;
