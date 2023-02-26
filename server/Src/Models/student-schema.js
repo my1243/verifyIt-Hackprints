@@ -7,7 +7,11 @@ const StudentSchema = new mongoose.Schema({
     rollNo: { type: String, required: true, unique: true },
     semester: { type: Number, required: true },
     clg: { type: String, required: true },
-    practicalExam: { type: Boolean, default: false },
+    img: { type: String },
+    practicalExam: [{
+        subjectCode: { type: String, required: true },
+        examStatus: { type: Boolean, default: false }
+    }],
     feeStatus: { type: Boolean, default: false },
     branch: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "branch" },
 
