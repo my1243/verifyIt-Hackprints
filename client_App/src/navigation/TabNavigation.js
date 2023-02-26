@@ -3,8 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import Scanner from "../components/BarCode/Scanner";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
+import ScannerScreen from "../screens/ScannerScreen";
+import Login from "../components/Auth/Login";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,8 +16,16 @@ const TabNavigation = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="HomeScreen"
+        initialRouteName="Authentication"
       >
+        <Tab.Screen
+          name="Authentication"
+          options={{
+            tabBarShowLabel: false,
+            tabBarButton: () => null,
+          }}
+          component={Login}
+        />
         <Tab.Screen
           name="HomeScreen"
           options={{
@@ -64,7 +73,7 @@ const TabNavigation = () => {
               alignItems: "center",
             },
           }}
-          component={Scanner}
+          component={ScannerScreen}
         />
 
         <Tab.Screen

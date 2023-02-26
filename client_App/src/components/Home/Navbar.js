@@ -4,7 +4,7 @@ import React from "react";
 const Navbar = () => {
   return (
     <View>
-      <View className="bg-blue-200 p-2 rounded-xl mt-10">
+      <View className="bg-blue-200 p-2 rounded-xl">
         <Text className="text-2xl">Hi Harshil!</Text>
         <Text className="text-base">Let's Start </Text>
       </View>
