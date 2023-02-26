@@ -15,6 +15,7 @@ app.use(body_parser.urlencoded({ extended: false }));
 const branch_routers = require('./Routers/branch-routers');
 const hall_routers = require('./Routers/hall-routers');
 const student_router = require('./Routers/student-router');
+const faculty_routers = require('./Routers/faculty-routers');
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -54,6 +55,16 @@ app.post("/get-specific-student", student_router);
 app.patch("/update-student", student_router);
 app.delete("/delete-student", student_router);
 app.delete("/delete-all-studentes", student_router);
+
+
+// faculty
+app.post("/create-faculty", faculty_routers);
+app.post("/get-faculties", faculty_routers);
+app.post("/get-specific-faculty", faculty_routers);
+app.patch("/update-faculty", faculty_routers);
+app.delete("/delete-faculty", faculty_routers);
+app.delete("/delete-all-faculties", faculty_routers);
+
 
 app.listen(PORT, () => {
     console.log(`Server listening on  http://127.0.0.1:${PORT}`);
