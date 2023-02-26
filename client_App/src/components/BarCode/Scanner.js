@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 export default function Scanner() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [qrData, setQrData] = useState("");
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -13,9 +18,17 @@ export default function Scanner() {
     })();
   }, []);
 
+  useEffect(() => {
+    if (qrData.length > 1) {
+      navigation.navigate("StudentDetails", { id: qrData });
+      console.log("Inside condition ", qrData);
+    }
+    console.log(qrData);
+  }, [qrData]);
+
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    setQrData(data);
   };
 
   if (hasPermission === null) {
@@ -26,15 +39,23 @@ export default function Scanner() {
   }
 
   return (
-    <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {scanned && (
-        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
-      )}
-    </View>
+    <>
+      <View className="mt-16 -mb-16 items-center">
+        <Text className="text-xl">Scan QR Code</Text>
+      </View>
+      <View style={styles.container} className="mx-auto">
+        <BarCodeScanner
+          onBarCodeScanned={handleBarCodeScanned}
+          style={StyleSheet.absoluteFillObject}
+        />
+        <TouchableOpacity
+          className="bottom-5 items-center p-2  rounded-lg bg-blue-400"
+          // onPress={handleBarCodeScanned}
+        >
+          <Text className="text-white text-base">Tap to Scan</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 }
 
@@ -42,6 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "flex-end",
+    width: "80%",
   },
 });
