@@ -4,12 +4,9 @@ const HallSchema = new mongoose.Schema({
 
     hallNo: { type: Number, required: true, min: 1, max: 50 },
     capacity: { type: Number, required: true, min: 1, max: 120 },
-    rollNoRange: {
-        startRollNo: { type: String, default: "XX000" },
-        endRollNo: { type: String, default: "XX000" },
-    },
-    available: { type: Boolean, default: true },
-    allocatedBranch: { type: mongoose.Schema.Types.ObjectId, ref: "branch" }
+    allotments: [{
+        allotment: { type: mongoose.Schema.Types.ObjectId, ref: "examSchedule" },
+    }],
 });
 
 /*

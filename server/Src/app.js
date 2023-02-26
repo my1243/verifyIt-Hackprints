@@ -16,6 +16,7 @@ const branch_routers = require('./Routers/branch-routers');
 const hall_routers = require('./Routers/hall-routers');
 const student_router = require('./Routers/student-router');
 const faculty_routers = require('./Routers/faculty-routers');
+const exam_schedule_routers = require('./Routers/exam-schedule-routers');
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -64,6 +65,15 @@ app.post("/get-specific-faculty", faculty_routers);
 app.patch("/update-faculty", faculty_routers);
 app.delete("/delete-faculty", faculty_routers);
 app.delete("/delete-all-faculties", faculty_routers);
+
+//exam-schedule
+
+app.post("/create-exam-schedule", exam_schedule_routers);
+app.post("/get-exam-schedules", exam_schedule_routers);
+app.patch("/update-exam-schedule", exam_schedule_routers);
+app.delete("/delete-exam-schedule", exam_schedule_routers);
+app.post("/get-specific-exam-schedule", exam_schedule_routers);
+app.delete("/delete-all-exam-schedulees", exam_schedule_routers);
 
 
 app.listen(PORT, () => {

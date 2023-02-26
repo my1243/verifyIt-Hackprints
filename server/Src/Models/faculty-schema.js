@@ -5,9 +5,9 @@ const FacultySchema = new mongoose.Schema({
     fShortName: { type: String, unique: true, required: true },
     fName: { type: String, required: true },
     branch: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "branch" },
-    halls: [{
-        hall: { type: mongoose.Schema.Types.ObjectId, ref: "hall", required: true },
-    }]
+    allotments: [{
+        allotment: { type: mongoose.Schema.Types.ObjectId, ref: "examSchedule" },
+    }],
 });
 
 /*

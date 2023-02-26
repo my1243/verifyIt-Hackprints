@@ -9,8 +9,13 @@ const BranchSchema = new mongoose.Schema({
     subjects: [{
         subjectCode: { type: String, required: true },
         subjectName: { type: String, required: true },
+        allotments: [{
+            allotment: { type: mongoose.Schema.Types.ObjectId, ref: "examSchedule" },
+        }],
     }],
-    available: { type: Boolean, default: true }
+    allotments: [{
+        allotment: { type: mongoose.Schema.Types.ObjectId, ref: "examSchedule" },
+    }],
 });
 
 /*
