@@ -1,11 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 
 mongoose.set("strictQuery", true);
 
-mongoose.connect("mongodb://localhost:27017/Hackprints")
-    .then(() => {
-        console.log(`db connection successfully...`);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+mongoose
+	.connect(process.env.MONGO_URI)
+	.then(() => {
+		console.log(`db connection successfully...`);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
