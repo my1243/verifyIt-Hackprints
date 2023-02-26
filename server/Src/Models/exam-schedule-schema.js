@@ -10,6 +10,11 @@ const ExamScheduleSchema = new mongoose.Schema({
     hall: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "hall" },
     faculty: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "faculty" },
     subject: { type: mongoose.Schema.Types.ObjectId, required: true, },
+    verification: [{
+        studentId: { type: mongoose.Schema.Types.ObjectId, required: true },
+        currentTime: { type: String, required: true },
+        verified: { type: Boolean, default: false },
+    }]
 });
 
 /*
