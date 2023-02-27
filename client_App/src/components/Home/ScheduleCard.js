@@ -1,24 +1,81 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
-import { Feather } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "../../api/axios";
+import moment from "moment";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ScheduleCard = () => {
+const ScheduleCard = ({ item }) => {
   const navigation = useNavigation();
+  const [hall, setHall] = useState("");
+  const [subject, setSubject] = useState("");
+
+  const handleSubject = async () => {
+    const { data } = await axios.post(
+      "/get-specific-subject",
+      { branch: item.branch, subject: item.subject },
+      {
+        method: "POST",
+      }
+    );
+    setSubject(data);
+  };
+  const handleHall = async () => {
+    const { data } = await axios.post(
+      "/get-specific-hall",
+      { _id: item.hall },
+      {
+        method: "POST",
+      }
+    );
+    // console.log(data);
+    await AsyncStorage.setItem("hallId", data._id);
+    await AsyncStorage.setItem("startTime", item?.examStartTime);
+    await AsyncStorage.setItem("endTime", item?.examEndTime);
+    await AsyncStorage.setItem("date", item?.examDate);
+    await AsyncStorage.setItem("scheduleId", item?._id);
+
+    setHall(data);
+  };
+
+  useEffect(() => {
+    handleHall();
+    handleSubject();
+  }, []);
 
   return (
     <TouchableOpacity
-      className="my-3"
-      onPress={() => {
-        navigation.navigate("ScheduleDetails");
-      }}
+      className="my-3 mx-3"
+      // onPress={() => {
+      //   navigation.navigate("ScheduleDetails");
+      // }}
     >
-      <View className="bg-[#FCEBDC] p-2 rounded-xl border-l-8 border-[#E27A1A] pl-6">
-        <Text className="text-[#E27A1A] font-bold text-lg">AJT Exam</Text>
-        <Text className="text-[#EEAB6D] text-base">Block No. : 12</Text>
+      <View className="bg-[#5868C7] p-2 rounded-xl border-l-8 border-[#ffffff] pl-6">
+        <View className="flex flex-row justify-between">
+          <Text className="text-[#ffffff] font-bold text-lg">
+            {item.examName}
+          </Text>
+          <Text className="text-[#ffffff] font-bold text-lg mr-2">
+            {subject.subjectName} - [{subject.subjectCode}]
+          </Text>
+        </View>
+        <View className="flex flex-row items-center my-1 space-x-5">
+          <Text className="text-[#ffffff] text-base">
+            Block No. : {hall.hallNo}
+          </Text>
+        </View>
+        <View className="flex flex-row items-center space-x-3 my-1">
+          <Text className="text-[#ffffff] text-base ">
+            {moment(item?.examStartTime).format("LT")} -{" "}
+            {moment(item?.examEndTime).format("LT")}
+          </Text>
+        </View>
         <View className="flex flex-row items-center space-x-3">
-          <Feather name="clock" size={18} color="#dd8d43" />
-          <Text className="text-[#dd8d43] text-sm ">09.00 - 10.00</Text>
+          <Text className="text-[#ffffff] text-base ">Roll No.</Text>
+          <Text className="text-[#ffffff] text-base ">
+            {hall.rollNoRange?.startRollNo} - {hall.rollNoRange?.endRollNo}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
