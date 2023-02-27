@@ -39,6 +39,7 @@ const AssignBlock = () => {
       const { data } = await axios.post("/allocate-hall", Block, {
         method: "POST",
       });
+      alert("Block assigned successfully");
       alert(data);
     } catch (err) {
       console.log(err);
