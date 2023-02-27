@@ -6,6 +6,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 import ScannerScreen from "../screens/ScannerScreen";
 import Login from "../components/Auth/Login";
+import VerificationScreen from "../screens/VerificationScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -77,7 +78,7 @@ const TabNavigation = () => {
         />
 
         <Tab.Screen
-          name="ProfileScreen"
+          name="VerificationScreen"
           options={{
             tabBarShowLabel: false,
             tabBarIcon: ({ color, focused }) => (
@@ -95,7 +96,7 @@ const TabNavigation = () => {
               alignItems: "center",
             },
           }}
-          component={ProfileScreen}
+          component={VerificationScreen}
         />
       </Tab.Navigator>
     </NavigationContainer>
