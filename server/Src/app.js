@@ -21,7 +21,7 @@ const faculty_routers = require("./Routers/faculty-routers");
 const exam_schedule_routers = require("./Routers/exam-schedule-routers");
 
 app.get("/", (req, res) => {
-	res.send("Hello World!");
+  res.send("Hello World!");
 });
 
 //branches
@@ -75,8 +75,11 @@ app.post("/get-exam-schedules", exam_schedule_routers);
 app.patch("/update-exam-schedule", exam_schedule_routers);
 app.delete("/delete-exam-schedule", exam_schedule_routers);
 app.post("/get-specific-exam-schedule", exam_schedule_routers);
+app.put("/verifyStudent", exam_schedule_routers);
+app.post("/getVerifiedStudent", exam_schedule_routers);
+app.post("/get-specific-exam-by-fac-schedule", exam_schedule_routers);
 app.delete("/delete-all-exam-schedulees", exam_schedule_routers);
 
 app.listen(PORT, () => {
-	console.log(`Server listening on  http://127.0.0.1:${PORT}`);
+  console.log(`Server listening on  http://127.0.0.1:${PORT}`);
 });

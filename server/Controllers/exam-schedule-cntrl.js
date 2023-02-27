@@ -97,6 +97,31 @@ module.exports = {
       return res.status(401).send(error);
     }
   },
+  verifyStudent: async (req, res) => {
+    try {
+      const { studentId, currTime, _id } = req.body;
+      let examSchedule = await ExamScheduleCollection.findById(_id);
+
+      examSchedule.verification.push({
+        studentId: studentId,
+        currentTime: currTime.toString(),
+        verified: true,
+      });
+      await examSchedule.save();
+      return res.status(200).send(examSchedule);
+    } catch (error) {
+      return res.status(401).send(error);
+    }
+  },
+  getVerifiedStudent: async (req, res) => {
+    try {
+      const { _id } = req.body;
+      let examSchedule = await ExamScheduleCollection.findOne({ _id: _id });
+      return res.status(200).send(examSchedule.verification);
+    } catch (error) {
+      return res.status(401).send(error);
+    }
+  },
   updateExamSchedule: async (req, res) => {
     try {
       //branch
@@ -252,6 +277,23 @@ module.exports = {
         branch: branch._id,
       });
 
+      return res.status(200).send(examSchedule);
+    } catch (error) {
+      return res.status(401).send(error);
+    }
+  },
+  getExamSchedulesByFaculty: async (req, res) => {
+    try {
+      //faculty
+      let faculty = await FacultyCollection.findOne({
+        $and: [{ fId: req.body.fId }],
+      });
+
+      let examSchedule = await ExamScheduleCollection.find({
+        faculty: faculty._id.toString(),
+      });
+
+      // console.log()
       return res.status(200).send(examSchedule);
     } catch (error) {
       return res.status(401).send(error);

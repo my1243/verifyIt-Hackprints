@@ -20,7 +20,7 @@ const ExamScheduleSchema = new mongoose.Schema({
   subject: { type: mongoose.Schema.Types.ObjectId, required: true },
   verification: [
     {
-      studentId: { type: mongoose.Schema.Types.ObjectId, required: true },
+      studentId: { type: String, required: true },
       currentTime: { type: String, required: true },
       verified: { type: Boolean, default: false },
     },
